@@ -27,6 +27,8 @@ var
 
 implementation
 
+uses Unit1;
+
 {$R *.dfm}
 
 end.

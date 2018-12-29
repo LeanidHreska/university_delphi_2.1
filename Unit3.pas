@@ -14,8 +14,8 @@ type
     WagonTypeEdit: TLabeledEdit;
     btn1: TButton;
     btn2: TButton;
-    DepartureTimeEdit: TMaskEdit;
-    DepartureTimeLabel: TLabel;
+    DepartureDateEdit: TMaskEdit;
+    DepartureDateLabel: TLabel;
     TransactionIdEditHidden: TEdit;
     procedure btn2Click(Sender: TObject);
     procedure btn1Click(Sender: TObject);
@@ -55,8 +55,7 @@ begin
 
       DM.TrainData.DataSet.Refresh;
 
-      Form3.Close;
-      Form1.Show;
+      Form3.Hide;
       clearForm;
     end
   else begin
@@ -67,7 +66,7 @@ end;
 function isFormValid(): Boolean;
 begin
   if (Form3.TrainIdEdit.Text = '')
-    or (Form3.DepartureTimeEdit.Text = '')
+    or (Form3.DepartureDateEdit.Text = '')
     or (Form3.TicketAmountEdit.Text = '')
     or (Form3.TicketPriceEdit.Text = '')
     or (Form3.WagonTypeEdit.Text = '')
@@ -78,7 +77,7 @@ end;
 procedure setParamsToQuery(withTransactionId: Boolean);
 begin
   DM.TrainQuery.ParamByName('trainId').AsInteger := StrToInt(Form3.TrainIdEdit.Text);
-  DM.TrainQuery.ParamByName('departureTime').AsTime := StrToTime(Form3.DepartureTimeEdit.Text);
+  DM.TrainQuery.ParamByName('departureDate').AsDate := StrToDate(Form3.DepartureDateEdit.Text);
   DM.TrainQuery.ParamByName('ticketQuantity').AsInteger := StrToInt(Form3.TicketAmountEdit.Text);
   DM.TrainQuery.ParamByName('ticketPrice').AsFloat := StrToInt(Form3.TicketPriceEdit.Text);
   DM.TrainQuery.ParamByName('wagonType').AsString := Form3.WagonTypeEdit.Text;
@@ -88,7 +87,7 @@ end;
 procedure preFillForm(dataset: TDataSet);
 begin
   Form3.TrainIdEdit.Text := dataset.FieldByName('TRAIN_ID').AsString;
-  Form3.DepartureTimeEdit.Text := dataset.FieldByName('DEPARTURE_TIME').AsString;
+  Form3.DepartureDateEdit.Text := dataset.FieldByName('DEPARTURE_DATE').AsString;
   Form3.TicketAmountEdit.Text := dataset.FieldByName('TICKET_QUANTITY').AsString;
   Form3.TicketPriceEdit.Text := dataset.FieldByName('TICKET_PRICE').AsString;
   Form3.WagonTypeEdit.Text := dataset.FieldByName('WAGON_TYPE').AsString;
@@ -103,7 +102,7 @@ end;
 procedure clearForm();
 begin
   Form3.TrainIdEdit.Text := '';
-  Form3.DepartureTimeEdit.Text := '';
+  Form3.DepartureDateEdit.Text := '';
   Form3.TicketAmountEdit.Text := '';
   Form3.TicketPriceEdit.Text := '';
   Form3.WagonTypeEdit.Text := '';
@@ -125,7 +124,7 @@ procedure TForm3.updateRecordFromForm(Sender: TObject);
 begin
   DM.TrainQuery.SQL.Text := 'UPDATE TRAINS SET ' +
     'TRAIN_ID = :trainId, ' +
-    'DEPARTURE_TIME = :departureTime, ' +
+    'DEPARTURE_DATE = :departureDate, ' +
     'TICKET_QUANTITY = :ticketQuantity, ' +
     'TICKET_PRICE = :ticketPrice, ' +
     'WAGON_TYPE = :wagonType ' +
