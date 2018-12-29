@@ -1,0 +1,46 @@
+object DM: TDM
+  OldCreateOrder = False
+  Left = 710
+  Top = 221
+  Height = 309
+  Width = 411
+  object Trains: TTable
+    Active = True
+    MasterSource = TrainData
+    TableName = 'Trains.db'
+    Left = 80
+    Top = 48
+  end
+  object TrainData: TDataSource
+    Left = 80
+    Top = 104
+  end
+  object TrainQuery: TQuery
+    Left = 80
+    Top = 168
+  end
+  object Passenger: TTable
+    Left = 176
+    Top = 48
+  end
+  object PassengerQuery: TQuery
+    Left = 176
+    Top = 168
+  end
+  object PassengerData: TDataSource
+    Left = 176
+    Top = 104
+  end
+  object Baggage: TTable
+    Left = 288
+    Top = 48
+  end
+  object BaggageQuery: TQuery
+    Left = 288
+    Top = 168
+  end
+  object BaggageData: TDataSource
+    Left = 288
+    Top = 112
+  end
+end
