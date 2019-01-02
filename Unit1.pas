@@ -23,6 +23,10 @@ type
     PriceOfAllSoldTicketsValueLabel: TLabel;
     SoldTicketsQuantityLabel: TLabel;
     SoldTicketsQuantityLabelValue: TLabel;
+    MainMenu: TMainMenu;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    N6: TMenuItem;
     procedure N1Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
@@ -30,6 +34,8 @@ type
     procedure deleteButtonClick(Sender: TObject);
     procedure editButtonClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure N5Click(Sender: TObject);
+    procedure N6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -39,6 +45,7 @@ type
 function getInsertSQLQuery(tableName: String): String;
 function getInsertParamsString(tableName: String): String;
 function getCurrentQuery(): TQuery;
+function getCurrentDataSet(): TDataSet;
 function getCurrentTableName(): string;
 procedure setPriceOfAllSoldTickets();
 procedure setSoldTicketsQuantity();
@@ -48,7 +55,7 @@ var
 
 implementation
 
-uses Unit3, Unit2;
+uses Unit3, Unit2, Unit4;
 
 
 {$R *.dfm}
@@ -113,6 +120,11 @@ begin
   if (currentDataSource = DM.TrainData) then Result := 'TRAINS'
   else if (currentDataSource = DM.PassengerData) then Result := 'PASSENGER'
   else Result := 'BAGGAGE';
+end;
+
+function getCurrentDataSet(): TDataSet;
+begin
+  Result:= Form1.DBGrid.DataSource.DataSet;
 end;
 
 procedure TForm1.editButtonClick(Sender: TObject);
@@ -187,6 +199,24 @@ procedure TForm1.FormActivate(Sender: TObject);
 begin
  setPriceOfAllSoldTickets;
  setSoldTicketsQuantity;
+end;
+
+procedure TForm1.N5Click(Sender: TObject);
+begin
+  SearchForm.Show;
+  Unit4.prepareForm('Trains');
+end;
+
+procedure TForm1.N6Click(Sender: TObject);
+begin
+  DM.TrainData.DataSet.Filtered := False;
+  DM.TrainData.DataSet.Filter := '';
+  DM.PassengerData.DataSet.Filtered := False;
+  DM.PassengerData.DataSet.Filter := '';
+  DM.BaggageData.DataSet.Filtered := False;
+  DM.BaggageData.DataSet.Filter := '';
+  setSoldTicketsQuantity;
+  setPriceOfAllSoldTickets;
 end;
 
 end.

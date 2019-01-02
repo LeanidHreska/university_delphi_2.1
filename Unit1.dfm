@@ -1,15 +1,16 @@
 object Form1: TForm1
-  Left = 222
-  Top = 138
+  Left = 347
+  Top = 131
   Width = 870
   Height = 533
   Caption = 'Form1'
-  Color = clBtnFace
+  Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -16
   Font.Name = 'Times New Roman'
   Font.Style = []
+  Menu = MainMenu
   OldCreateOrder = False
   PopupMenu = PopupMenu1
   OnActivate = FormActivate
@@ -21,7 +22,7 @@ object Form1: TForm1
     Width = 253
     Height = 19
     Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100' '#1074#1089#1077#1093' '#1087#1088#1086#1076#1072#1085#1085#1099#1093' '#1073#1080#1083#1077#1090#1086#1074': '
-    Color = clBtnFace
+    Color = clWhite
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
     Font.Height = -16
@@ -141,6 +142,21 @@ object Form1: TForm1
     object N3: TMenuItem
       Caption = #1041#1072#1075#1072#1078
       OnClick = N3Click
+    end
+  end
+  object MainMenu: TMainMenu
+    Left = 64
+    Top = 416
+    object N4: TMenuItem
+      Caption = #1055#1086#1080#1089#1082
+      object N5: TMenuItem
+        Caption = #1055#1086#1077#1079#1076#1072
+        OnClick = N5Click
+      end
+    end
+    object N6: TMenuItem
+      Caption = #1057#1073#1088#1086#1089#1080#1090#1100' '#1074#1089#1077' '#1092#1080#1083#1100#1090#1088#1099
+      OnClick = N6Click
     end
   end
 end

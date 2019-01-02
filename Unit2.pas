@@ -16,6 +16,7 @@ type
     Baggage: TTable;
     BaggageQuery: TQuery;
     BaggageData: TDataSource;
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -30,6 +31,12 @@ implementation
 uses Unit1;
 
 {$R *.dfm}
+
+
+procedure TDM.DataModuleCreate(Sender: TObject);
+begin
+  TrainQuery.Open;
+end;
 
 end.
 

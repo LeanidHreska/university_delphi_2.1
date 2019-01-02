@@ -1,7 +1,8 @@
 object DM: TDM
   OldCreateOrder = False
-  Left = 359
-  Top = 283
+  OnCreate = DataModuleCreate
+  Left = 645
+  Top = 238
   Height = 309
   Width = 411
   object Trains: TTable
@@ -17,25 +18,33 @@ object DM: TDM
     Top = 104
   end
   object TrainQuery: TQuery
+    Active = True
     DatabaseName = 'HreskaJD_Station'
+    Filtered = True
     DataSource = TrainData
+    SQL.Strings = (
+      'SELECT * FROM TRAINS')
     Left = 80
     Top = 168
   end
   object Passenger: TTable
     Active = True
     DatabaseName = 'HreskaJD_Station'
-    TableName = 'Passengers.db'
+    Filtered = True
+    TableName = 'PASSENGERS.DB'
     Left = 176
     Top = 48
   end
   object PassengerQuery: TQuery
-    DataSource = PassengerData
+    Active = True
+    DatabaseName = 'HreskaJD_Station'
+    SQL.Strings = (
+      'SELECT * FROM PASSENGERS')
     Left = 176
     Top = 168
   end
   object PassengerData: TDataSource
-    DataSet = Passenger
+    DataSet = PassengerQuery
     Left = 176
     Top = 104
   end
