@@ -86,16 +86,16 @@ object Form1: TForm1
     TitleFont.Style = []
   end
   object DBNavigator: TDBNavigator
-    Left = 224
+    Left = 208
     Top = 400
-    Width = 330
+    Width = 340
     Height = 33
     DataSource = DM.TrainData
     TabOrder = 1
   end
   object addButton: TButton
-    Left = 128
-    Top = 352
+    Left = 192
+    Top = 360
     Width = 113
     Height = 25
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100
@@ -103,8 +103,8 @@ object Form1: TForm1
     OnClick = addButtonClick
   end
   object editButton: TButton
-    Left = 264
-    Top = 352
+    Left = 320
+    Top = 360
     Width = 113
     Height = 25
     Caption = #1048#1079#1084#1077#1085#1080#1090#1100
@@ -112,21 +112,13 @@ object Form1: TForm1
     OnClick = editButtonClick
   end
   object deleteButton: TButton
-    Left = 392
-    Top = 352
+    Left = 448
+    Top = 360
     Width = 113
     Height = 25
     Caption = #1059#1076#1072#1083#1080#1090#1100
     TabOrder = 4
     OnClick = deleteButtonClick
-  end
-  object insertButton: TButton
-    Left = 528
-    Top = 352
-    Width = 113
-    Height = 25
-    Caption = #1042#1089#1090#1072#1074#1080#1090#1100
-    TabOrder = 5
   end
   object PopupMenu1: TPopupMenu
     Left = 704
@@ -152,6 +144,13 @@ object Form1: TForm1
       object N5: TMenuItem
         Caption = #1055#1086#1077#1079#1076#1072
         OnClick = N5Click
+      end
+    end
+    object N7: TMenuItem
+      Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+      object N8: TMenuItem
+        Caption = #1053#1086#1084#1077#1088' '#1090#1088#1072#1085#1079#1072#1094#1080#1080' ('#1087#1086' '#1091#1073#1099#1074#1072#1085#1080#1102')'
+        OnClick = N8Click
       end
     end
     object N6: TMenuItem

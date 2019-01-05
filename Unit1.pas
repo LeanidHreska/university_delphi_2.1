@@ -18,7 +18,6 @@ type
     addButton: TButton;
     editButton: TButton;
     deleteButton: TButton;
-    insertButton: TButton;
     PriceOfAllSoldTicketsLabel: TLabel;
     PriceOfAllSoldTicketsValueLabel: TLabel;
     SoldTicketsQuantityLabel: TLabel;
@@ -27,6 +26,8 @@ type
     N4: TMenuItem;
     N5: TMenuItem;
     N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
     procedure N1Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
@@ -36,6 +37,7 @@ type
     procedure FormActivate(Sender: TObject);
     procedure N5Click(Sender: TObject);
     procedure N6Click(Sender: TObject);
+    procedure N8Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -217,6 +219,12 @@ begin
   DM.BaggageData.DataSet.Filter := '';
   setSoldTicketsQuantity;
   setPriceOfAllSoldTickets;
+end;
+
+procedure TForm1.N8Click(Sender: TObject);
+begin
+DM.TrainQuery.SQL.Text := 'SELECT * FROM TRAINS ORDER BY TRANSACTION_ID DESC';
+DM.TrainQuery.Open;
 end;
 
 end.

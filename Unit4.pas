@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, ExtCtrls, Unit1, Unit2, DB;
+  Dialogs, StdCtrls, Buttons, ExtCtrls, Unit1, Unit2, DB, DBTables;
 
 type
   TSearchForm = class(TForm)
@@ -52,11 +52,24 @@ end;
 
 procedure TSearchForm.SearchButtonClick(Sender: TObject);
 var dataSet: TDataSet;
+    table: TTable;
     selectedFieldForSearching: string;
 begin
-  if (tableForSearching = 'Trains') then dataSet := DM.TrainData.DataSet;
-  if (tableForSearching = 'Passengers') then dataSet := DM.PassengerData.DataSet;
-  if (tableForSearching = 'Baggage') then dataSet := DM.BaggageData.DataSet;
+  if (tableForSearching = 'Trains') then
+    begin
+      dataSet := DM.TrainData.DataSet;
+      table := DM.Trains;
+    end;
+  if (tableForSearching = 'Passengers') then
+    begin
+      dataSet := DM.PassengerData.DataSet;
+      table := DM.Passenger;
+    end;
+  if (tableForSearching = 'Baggage') then
+    begin
+      dataSet := DM.BaggageData.DataSet;
+      table := DM.Baggage;
+    end;
 
   selectedFieldForSearching := getSelectedFieldForSearching(SearchByDropBox);
   if (selectedFieldForSearching <> '') and (SearchEdit.Text <> '') then
@@ -64,8 +77,12 @@ begin
       dataSet.Filtered := IsFilterCheckBox.Checked;;
       dataSet.Filter := selectedFieldForSearching + '=' + '''' + SearchEdit.Text + '''';
 
-      SearchEdit.Text := '';
-      Hide;
+      if not table.Locate(selectedFieldForSearching, SearchEdit.Text, [loCaseInsensitive, loPartialKey]) then
+        ShowMessage('"' + SearchByDropBox.Text + '" со значением ' + SearchEdit.Text + ' не найдено')
+      else begin
+        SearchEdit.Text := '';
+        Hide;
+      end;
     end;
 end;
 

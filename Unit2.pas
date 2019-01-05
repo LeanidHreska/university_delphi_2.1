@@ -36,6 +36,8 @@ uses Unit1;
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
   TrainQuery.Open;
+  TrainData.DataSet.Open;
+  TrainData.DataSet.Active := true;
 end;
 
 end.
