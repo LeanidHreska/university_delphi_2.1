@@ -52,20 +52,17 @@ end;
 
 procedure TSearchForm.SearchButtonClick(Sender: TObject);
 var dataSet: TDataSet;
-    table: TTable;
     selectedFieldForSearching: string;
 begin
-  if (tableForSearching = 'Trains')
+  if (tableForSearching = 'Trains') then
       dataSet := DM.TrainData.DataSet;
   if (tableForSearching = 'Passengers') then
     begin
       dataSet := DM.PassengerData.DataSet;
-      table := DM.Passenger;
     end;
   if (tableForSearching = 'Baggage') then
     begin
       dataSet := DM.BaggageData.DataSet;
-      table := DM.Baggage;
     end;
 
   selectedFieldForSearching := getSelectedFieldForSearching(SearchByDropBox);

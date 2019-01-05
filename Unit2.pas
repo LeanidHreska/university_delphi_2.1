@@ -6,8 +6,8 @@ uses
   SysUtils, Classes, DBTables, DB;
 
 type
+  TProcedureAsParam = procedure();
   TDM = class(TDataModule)
-    Trains: TTable;
     TrainData: TDataSource;
     TrainQuery: TQuery;
     Passenger: TTable;
@@ -25,6 +25,7 @@ type
 
 var
   DM: TDM;
+  procedure executeSQLTransaction(query: TQuery; dataset: TDataSet; executeTransaction: TProcedureAsParam);
 
 implementation
 
@@ -35,9 +36,20 @@ uses Unit1;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
-  TrainQuery.Open;
   TrainData.DataSet.Open;
-  TrainData.DataSet.Active := true;
+end;
+
+procedure executeSQLTransaction(query: TQuery; dataset: TDataSet; executeTransaction: TProcedureAsParam);
+var sqlText: string;
+begin
+  sqlText := query.SQL.Text;
+
+  executeTransaction();
+
+  query.SQL.Clear;
+  query.SQL.Text := sqlText;
+
+  dataset.Open;
 end;
 
 end.

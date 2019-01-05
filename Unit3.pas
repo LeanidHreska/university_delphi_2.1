@@ -34,6 +34,8 @@ var
   procedure changeButtonLabel(caption: string);
   procedure activateEditMode();
   procedure deactivateEditMode();
+  procedure executeInsertTransaction();
+  procedure executeUpdateTransaction;
   function isFormValid(): Boolean;
 implementation
 
@@ -45,15 +47,18 @@ Form3.Hide;
 deactivateEditMode;
 end;
 
+procedure executeInsertTransaction;
+begin
+  DM.TrainQuery.SQL.Text := Unit1.getInsertSQLQuery('Trains') + ' ' + Unit1.getInsertParamsString('Trains') + ';';
+  setParamsToQuery(false);
+  DM.TrainQuery.ExecSQL;
+end;
+
 procedure TForm3.btn1Click(Sender: TObject);
 begin
   if (isFormValid()) then
     begin
-      DM.TrainQuery.SQL.Text := Unit1.getInsertSQLQuery('Trains') + ' ' + Unit1.getInsertParamsString('Trains') + ';';
-      setParamsToQuery(false);
-      DM.TrainQuery.ExecSQL;
-
-      DM.TrainData.DataSet.Refresh;
+      Unit2.executeSQLTransaction(DM.TrainQuery, DM.TrainData.DataSet, @executeInsertTransaction);
 
       Form3.Hide;
       clearForm;
@@ -120,7 +125,7 @@ begin
   Form3.btn1.OnClick := Form3.btn1Click;
 end;
 
-procedure TForm3.updateRecordFromForm(Sender: TObject);
+procedure executeUpdateTransaction;
 begin
   DM.TrainQuery.SQL.Text := 'UPDATE TRAINS SET ' +
     'TRAIN_ID = :trainId, ' +
@@ -132,8 +137,11 @@ begin
 
   setParamsToQuery(True);
   DM.TrainQuery.ExecSQL;
+end;
 
-  DM.TrainData.DataSet.Refresh;
+procedure TForm3.updateRecordFromForm(Sender: TObject);
+begin
+  Unit2.executeSQLTransaction(DM.TrainQuery, DM.TrainData.DataSet, @executeUpdateTransaction);
 
   Form3.Hide;
   deactivateEditMode;

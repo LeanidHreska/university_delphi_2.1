@@ -5,13 +5,6 @@ object DM: TDM
   Top = 238
   Height = 309
   Width = 411
-  object Trains: TTable
-    Active = True
-    DatabaseName = 'HreskaJD_Station'
-    TableName = 'TRAINS.DB'
-    Left = 80
-    Top = 48
-  end
   object TrainData: TDataSource
     DataSet = TrainQuery
     Left = 80

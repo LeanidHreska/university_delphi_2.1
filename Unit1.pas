@@ -51,6 +51,7 @@ function getCurrentDataSet(): TDataSet;
 function getCurrentTableName(): string;
 procedure setPriceOfAllSoldTickets();
 procedure setSoldTicketsQuantity();
+procedure executeDeleteTransaction;
 
 var
   Form1: TForm1;
@@ -86,24 +87,30 @@ begin
 if (getCurrentTableName() = 'TRAINS') then Form3.Show;
 end;
 
-procedure TForm1.deleteButtonClick(Sender: TObject);
+procedure executeDeleteTransaction;
 var transactionId: integer;
-currentTable: string;
-currentDataSource: TDataSource;
-currentQuery: TQuery;
+    currentTable: string;
+    currentQuery: TQuery;
 begin
   currentTable := getCurrentTableName();
   currentQuery := getCurrentQuery();
-  currentDataSource := DBGrid.DataSource;
 
-  transactionId := DBGrid.DataSource.DataSet.FieldByName('Transaction_id').AsInteger;
+  transactionId := Form1.DBGrid.DataSource.DataSet.FieldByName('Transaction_id').AsInteger;
   currentQuery.SQL.Text := 'DELETE FROM ' + currentTable + ' WHERE TRANSACTION_ID=:transactionId;';
   currentQuery.ParamByName('transactionId').AsInteger := transactionId;
 
   currentQuery.ExecSQL;
-  currentDataSource.DataSet.Refresh;
+end;
 
-  if (currentTable = 'TRAINS') then setPriceOfAllSoldTickets;
+procedure TForm1.deleteButtonClick(Sender: TObject);
+begin
+  executeSQLTransaction(getCurrentQuery(), DBGrid.DataSource.DataSet, @executeDeleteTransaction);
+
+  if (getCurrentTableName() = 'TRAINS') then
+    begin
+      setPriceOfAllSoldTickets;
+      setSoldTicketsQuantity;
+    end;
 end;
 
 function getCurrentQuery(): TQuery;
