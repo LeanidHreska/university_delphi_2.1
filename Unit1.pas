@@ -28,6 +28,10 @@ type
     N6: TMenuItem;
     N7: TMenuItem;
     N8: TMenuItem;
+    N9: TMenuItem;
+    N10: TMenuItem;
+    C1: TMenuItem;
+    N11: TMenuItem;
     procedure N1Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
@@ -38,6 +42,10 @@ type
     procedure N5Click(Sender: TObject);
     procedure N6Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
+    procedure N9Click(Sender: TObject);
+    procedure N10Click(Sender: TObject);
+    procedure C1Click(Sender: TObject);
+    procedure N11Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -52,13 +60,14 @@ function getCurrentTableName(): string;
 procedure setPriceOfAllSoldTickets();
 procedure setSoldTicketsQuantity();
 procedure executeDeleteTransaction;
+procedure sort(field: string; sortType: string = 'ASC');
 
 var
   Form1: TForm1;
 
 implementation
 
-uses Unit3, Unit2, Unit4;
+uses Unit3, Unit2, Unit4, Unit5;
 
 
 {$R *.dfm}
@@ -95,7 +104,7 @@ begin
   currentTable := getCurrentTableName();
   currentQuery := getCurrentQuery();
 
-  transactionId := Form1.DBGrid.DataSource.DataSet.FieldByName('Transaction_id').AsInteger;
+  transactionId := Form1.DBGrid.DataSource.DataSet.FieldByName('TRANSACTION_ID').AsInteger;
   currentQuery.SQL.Text := 'DELETE FROM ' + currentTable + ' WHERE TRANSACTION_ID=:transactionId;';
   currentQuery.ParamByName('transactionId').AsInteger := transactionId;
 
@@ -230,8 +239,33 @@ end;
 
 procedure TForm1.N8Click(Sender: TObject);
 begin
-DM.TrainQuery.SQL.Text := 'SELECT * FROM TRAINS ORDER BY TRANSACTION_ID DESC';
-DM.TrainQuery.Open;
+  sort('TRANSACTION_ID', 'DESC');
+end;
+
+procedure TForm1.N9Click(Sender: TObject);
+begin
+  sort('TRANSACTION_ID');
+end;
+
+procedure TForm1.N10Click(Sender: TObject);
+begin
+  sort('DEPARTURE_DATE', 'DESC');
+end;
+
+procedure sort(field: string; sortType: string = 'ASC');
+begin
+  DM.TrainQuery.SQL.Text := 'SELECT * FROM TRAINS ORDER BY ' + field + ' ' + sortType;
+  DM.TrainQuery.Open;
+end;
+
+procedure TForm1.C1Click(Sender: TObject);
+begin
+  sort('TICKET_PRICE');
+end;
+
+procedure TForm1.N11Click(Sender: TObject);
+begin
+  QueriesForm.Show;
 end;
 
 end.
