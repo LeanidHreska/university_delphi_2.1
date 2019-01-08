@@ -67,7 +67,7 @@ var
 
 implementation
 
-uses Unit3, Unit2, Unit4, Unit5;
+uses Unit3, Unit2, Unit4, Unit5, Unit6;
 
 
 {$R *.dfm}
@@ -94,19 +94,24 @@ end;
 procedure TForm1.addButtonClick(Sender: TObject);
 begin
 if (getCurrentTableName() = 'TRAINS') then Form3.Show;
+if (getCurrentTableNAme() = 'PASSENGERS') then PassengerForm.Show;
 end;
 
 procedure executeDeleteTransaction;
-var transactionId: integer;
+var uniqueFieldValue: integer;
     currentTable: string;
     currentQuery: TQuery;
+    uniqueField: string;
 begin
   currentTable := getCurrentTableName();
   currentQuery := getCurrentQuery();
 
-  transactionId := Form1.DBGrid.DataSource.DataSet.FieldByName('TRANSACTION_ID').AsInteger;
-  currentQuery.SQL.Text := 'DELETE FROM ' + currentTable + ' WHERE TRANSACTION_ID=:transactionId;';
-  currentQuery.ParamByName('transactionId').AsInteger := transactionId;
+  if (currentTable = 'TRAINS') then uniqueField := 'TRANSACTION_ID';
+  if (currentTable = 'PASSENGERS') then uniqueField := 'PASSENGER_ID';
+
+  uniqueFieldValue := Form1.DBGrid.DataSource.DataSet.FieldByName(uniqueField).AsInteger;
+  currentQuery.SQL.Text := 'DELETE FROM ' + currentTable + ' WHERE ' + uniqueField + '=:' + uniqueField +';';
+  currentQuery.ParamByName(uniqueField).AsInteger := uniqueFieldValue;
 
   currentQuery.ExecSQL;
 end;
@@ -136,7 +141,7 @@ var currentDataSource: TDataSource;
 begin
   currentDataSource := Form1.DBGrid.DataSource;
   if (currentDataSource = DM.TrainData) then Result := 'TRAINS'
-  else if (currentDataSource = DM.PassengerData) then Result := 'PASSENGER'
+  else if (currentDataSource = DM.PassengerData) then Result := 'PASSENGERS'
   else Result := 'BAGGAGE';
 end;
 
@@ -196,9 +201,9 @@ end;
 function getInsertSQLQuery(tableName: string): string;
 begin
   if(tableName = 'Trains') then
-    Result := 'INSERT INTO Trains (TRAIN_ID, DEPARTURE_DATE, TICKET_QUANTITY, TICKET_PRICE, WAGON_TYPE)'
+    Result := 'INSERT INTO TRAINS (TRAIN_ID, DEPARTURE_DATE, TICKET_QUANTITY, TICKET_PRICE, WAGON_TYPE)'
   else if (tableName = 'Passengers') then
-    Result := 'Not implemented'
+    Result := 'INSERT INTO PASSENGERS (PASSENGER_NAME, TRAIN_ID, NUMBER_OF_TICKETS, POINT_OF_DEPARTURE, POINT_OF_DESTINATION)'
   else if (tableName = 'Baggage') then
     Result := 'Not implemented'
 end;
@@ -208,7 +213,7 @@ begin
   if(tableName = 'Trains') then
     Result := 'VALUES (:trainId, :departureDate, :ticketQuantity, :ticketPrice, :wagonType)'
   else if (tableName = 'Passengers') then
-    Result := 'Not implemented'
+    Result := 'VALUES (:passengerName, :trainId, :numberOfTickets, :pointOfDeparture, :pointOfDestination)'
   else if (tableName = 'Baggage') then
     Result := 'Not implemented'
 end;

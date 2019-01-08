@@ -11,7 +11,6 @@ object DM: TDM
     Top = 104
   end
   object TrainQuery: TQuery
-    Active = True
     DatabaseName = 'HreskaJD_Station'
     Filtered = True
     SQL.Strings = (
