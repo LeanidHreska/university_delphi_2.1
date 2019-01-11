@@ -60,6 +60,7 @@ object PassengerForm: TPassengerForm
     Height = 25
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100
     TabOrder = 4
+    OnClick = btn1Click
   end
   object btn2: TButton
     Left = 240

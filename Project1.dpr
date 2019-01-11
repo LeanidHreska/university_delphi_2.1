@@ -6,7 +6,8 @@ uses
   Unit2 in 'Unit2.pas' {DM: TDataModule},
   Unit3 in 'Unit3.pas' {Form3},
   Unit4 in 'Unit4.pas' {SearchForm},
-  Unit5 in 'Unit5.pas' {QueriesForm};
+  Unit5 in 'Unit5.pas' {QueriesForm},
+  Unit6 in 'Unit6.pas' {PassengerForm};
 
 {$R *.res}
 
@@ -17,5 +18,6 @@ begin
   Application.CreateForm(TForm3, Form3);
   Application.CreateForm(TSearchForm, SearchForm);
   Application.CreateForm(TQueriesForm, QueriesForm);
+  Application.CreateForm(TPassengerForm, PassengerForm);
   Application.Run;
 end.

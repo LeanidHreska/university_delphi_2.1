@@ -87,7 +87,7 @@ begin
     end;
 
     6: begin
-      query.SQL.Text := 'SELECT SUM(TICKET_PRICE * TICKET_QUANTITY) FROM TRAIN WHERE DEPARTURE_DATE=:departureDate';
+      query.SQL.Text := 'SELECT SUM(TICKET_PRICE * TICKET_QUANTITY) FROM TRAINS WHERE DEPARTURE_DATE=:departureDate';
 
       query.ParamByName('departureDate').AsDate := StrToDate('27.11.2018');
     end;
@@ -119,7 +119,7 @@ begin
     3: Result := 'Выдать список всех поездов, отправляющихся с указанной станции с указанием номера поезда, даты';
     4: Result := 'Выдать список поездов с указанием даты, количества проданных билетов, цены билета.';
     5: Result := 'Выдать список пассажиров с указанием номера поезда, даты, пунктов отправления и назначения, количества билетов, количества багажа';
-    6: Result := 'Выдать количество проданных билетов в заданную дату (27.11.2008).';
+    6: Result := 'Выдать количество проданных билетов в заданную дату (27.11.2018).';
   end;
 end;
 

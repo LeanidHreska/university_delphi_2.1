@@ -157,6 +157,12 @@ begin
       Unit3.preFillForm(DBGrid.DataSource.DataSet);
       Unit3.activateEditMode;
       Form3.Show;
+    end
+  else if (getCurrentTableName() ='PASSENGERS') then
+    begin
+      PassengerForm.preFillForm(DBGrid.DataSource.DataSet);
+      PassengerForm.activateEditMode;
+      PassengerForm.Show;
     end;
 
 end;
