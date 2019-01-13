@@ -154,6 +154,14 @@ object Form1: TForm1
         Caption = #1055#1086#1077#1079#1076#1072
         OnClick = N15Click
       end
+      object N16: TMenuItem
+        Caption = #1055#1072#1089#1089#1072#1078#1080#1088#1099' ('#1079#1072#1087#1088#1086#1089')'
+        OnClick = N16Click
+      end
+      object N17: TMenuItem
+        Caption = #1043#1088#1091#1087#1087#1086#1074#1086#1081' '#1086#1090#1095#1105#1090
+        OnClick = N17Click
+      end
     end
     object N6: TMenuItem
       Caption = #1057#1073#1088#1086#1089#1080#1090#1100' '#1074#1089#1077' '#1092#1080#1083#1100#1090#1088#1099
@@ -172,5 +180,34 @@ object Form1: TForm1
       'v'
     Left = 672
     Top = 8
+  end
+  object RvQueryConnection: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = ReportQuery
+    Left = 56
+    Top = 8
+  end
+  object RvProject2: TRvProject
+    ProjectFile = 
+      'C:\Users\Leanid Hreska\Desktop\university_delphi_2.1\Project2.ra' +
+      'v'
+    Left = 136
+    Top = 8
+  end
+  object GroupReportProject: TRvProject
+    ProjectFile = 'C:\Users\Leanid Hreska\Desktop\university_delphi_2.1\GrRep.rav'
+    Left = 240
+    Top = 8
+  end
+  object GroupReportQuery: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = ReportQuery
+    Left = 328
+    Top = 8
+  end
+  object ReportQuery: TQuery
+    DatabaseName = 'HreskaJD_Station'
+    Left = 768
+    Top = 400
   end
 end

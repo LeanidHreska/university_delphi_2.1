@@ -16,7 +16,6 @@ type
     btn2: TButton;
     PassengerIdEditHidden: TEdit;
     PassengerNameEdit: TLabeledEdit;
-    LabeledEdit1: TLabeledEdit;
     procedure btn2Click(Sender: TObject);
     function isFormValid(): Boolean;
     procedure btn1Click(Sender: TObject);
@@ -88,7 +87,7 @@ end;
 
 procedure TPassengerForm.activateEditMode;
 begin
-  btn1.Caption := 'Сохранить';
+  btn1.Caption := 'Изменить';
   btn1.OnClick := updateRecordFromForm;
 end;
 
@@ -107,7 +106,7 @@ begin
       Hide;
       resetForm();
     end
-  else ShowMessage('Заполните все поля');
+  else ShowMessage('Caiieieoa ana iiey');
 end;
 
 procedure executeInsertTransaction;

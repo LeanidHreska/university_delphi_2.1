@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, ExtCtrls, DBCtrls, Grids, DBGrids, DB, DBTables,
-  StdCtrls, RpDefine, RpCon, RpConDS, RpRave;
+  StdCtrls, RpDefine, RpCon, RpConDS, RpRave, RpConBDE;
 
 type
   TForm1 = class(TForm)
@@ -36,6 +36,13 @@ type
     RvProject: TRvProject;
     N14: TMenuItem;
     N15: TMenuItem;
+    RvQueryConnection: TRvQueryConnection;
+    RvProject2: TRvProject;
+    N16: TMenuItem;
+    GroupReportProject: TRvProject;
+    GroupReportQuery: TRvQueryConnection;
+    N17: TMenuItem;
+    ReportQuery: TQuery;
     procedure N1Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
@@ -53,6 +60,8 @@ type
     procedure N12Click(Sender: TObject);
     procedure N13Click(Sender: TObject);
     procedure N15Click(Sender: TObject);
+    procedure N16Click(Sender: TObject);
+    procedure N17Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -218,7 +227,7 @@ end;
 
 procedure TForm1.FormActivate(Sender: TObject);
 begin
-// setSoldTicketsQuantity;
+ setSoldTicketsQuantity;
 end;
 
 procedure TForm1.N6Click(Sender: TObject);
@@ -284,6 +293,27 @@ end;
 procedure TForm1.N15Click(Sender: TObject);
 begin
   RvProject.Execute;
+end;
+
+procedure TForm1.N16Click(Sender: TObject);
+begin
+  RvQueryConnection.Query.SQL.Text := 'SELECT PASSENGERS.PASSENGER_ID, PASSENGERS.PASSENGER_NAME, PASSENGERS.POINT_OF_DEPARTURE, PASSENGERS.POINT_OF_DESTINATION, ' +
+      'TRAINS.DEPARTURE_DATE FROM PASSENGERS INNER JOIN TRAINS ON PASSENGERS.TRAIN_ID=TRAINS.TRAIN_ID';
+  RvQueryConnection.Query.Active := True;
+  RvQueryConnection.Query.Open;
+
+  RvProject2.Execute;
+end;
+
+procedure TForm1.N17Click(Sender: TObject);
+begin
+  GroupReportQuery.Query.SQL.Text := 'SELECT SUM (BAGGAGE.BAGGAGE_FREE_SEATS), PASSENGERS.PASSENGER_NAME, PASSENGERS.TRAIN_ID ' +
+  'FROM PASSENGERS ' +
+  'INNER JOIN BAGGAGE ON PASSENGERS.PASSENGER_ID=BAGGAGE.PASSENGER_ID ' +
+  'GROUP BY PASSENGERS.PASSENGER_NAME, PASSENGERS.TRAIN_ID';
+  GroupReportQuery.Query.Active := True;
+  GroupReportQuery.Query.Open;
+  GroupReportProject.Execute;
 end;
 
 end.

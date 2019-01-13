@@ -90,14 +90,4 @@ object PassengerForm: TPassengerForm
     EditLabel.Caption = #1048#1084#1103' '#1087#1072#1089#1089#1072#1078#1080#1088#1072
     TabOrder = 7
   end
-  object LabeledEdit1: TLabeledEdit
-    Left = 440
-    Top = 224
-    Width = 121
-    Height = 27
-    EditLabel.Width = 81
-    EditLabel.Height = 19
-    EditLabel.Caption = 'LabeledEdit1'
-    TabOrder = 8
-  end
 end

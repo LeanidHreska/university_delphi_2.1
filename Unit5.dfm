@@ -98,6 +98,15 @@ object QueriesForm: TQueriesForm
   end
   object Query: TQuery
     DatabaseName = 'HreskaJD_Station'
+    SQL.Strings = (
+      
+        'SELECT SUM (BAGGAGE.BAGGAGE_FREE_SEATS), PASSENGERS.PASSENGER_NA' +
+        'ME, PASSENGERS.TRAIN_ID'
+      'FROM PASSENGERS'
+      
+        'INNER JOIN BAGGAGE ON PASSENGERS.PASSENGER_ID=BAGGAGE.PASSENGER_' +
+        'ID'
+      'GROUP BY PASSENGERS.PASSENGER_NAME, PASSENGERS.TRAIN_ID')
     Left = 648
     Top = 80
   end
