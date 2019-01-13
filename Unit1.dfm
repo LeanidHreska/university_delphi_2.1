@@ -16,35 +16,6 @@ object Form1: TForm1
   OnActivate = FormActivate
   PixelsPerInch = 96
   TextHeight = 19
-  object PriceOfAllSoldTicketsLabel: TLabel
-    Left = 8
-    Top = 32
-    Width = 253
-    Height = 19
-    Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100' '#1074#1089#1077#1093' '#1087#1088#1086#1076#1072#1085#1085#1099#1093' '#1073#1080#1083#1077#1090#1086#1074': '
-    Color = clWhite
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clTeal
-    Font.Height = -16
-    Font.Name = 'Times New Roman'
-    Font.Pitch = fpVariable
-    Font.Style = []
-    ParentColor = False
-    ParentFont = False
-  end
-  object PriceOfAllSoldTicketsValueLabel: TLabel
-    Left = 264
-    Top = 32
-    Width = 9
-    Height = 21
-    Caption = '0'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clTeal
-    Font.Height = -19
-    Font.Name = 'Times New Roman'
-    Font.Style = []
-    ParentFont = False
-  end
   object SoldTicketsQuantityLabel: TLabel
     Left = 392
     Top = 32
@@ -145,6 +116,14 @@ object Form1: TForm1
         Caption = #1055#1086#1077#1079#1076#1072
         OnClick = N5Click
       end
+      object N12: TMenuItem
+        Caption = #1055#1072#1089#1089#1072#1078#1080#1088#1099
+        OnClick = N12Click
+      end
+      object N13: TMenuItem
+        Caption = #1041#1072#1075#1072#1078
+        OnClick = N13Click
+      end
     end
     object N7: TMenuItem
       Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
@@ -169,9 +148,29 @@ object Form1: TForm1
       Caption = #1047#1072#1087#1088#1086#1089#1099
       OnClick = N11Click
     end
+    object N14: TMenuItem
+      Caption = #1054#1090#1095#1105#1090#1099
+      object N15: TMenuItem
+        Caption = #1055#1086#1077#1079#1076#1072
+        OnClick = N15Click
+      end
+    end
     object N6: TMenuItem
       Caption = #1057#1073#1088#1086#1089#1080#1090#1100' '#1074#1089#1077' '#1092#1080#1083#1100#1090#1088#1099
       OnClick = N6Click
     end
+  end
+  object RvDataSetConnection: TRvDataSetConnection
+    RuntimeVisibility = rtDeveloper
+    DataSet = DM.TrainQuery
+    Left = 744
+    Top = 8
+  end
+  object RvProject: TRvProject
+    ProjectFile = 
+      'C:\Users\Leanid Hreska\Desktop\university_delphi_2.1\Project1.ra' +
+      'v'
+    Left = 672
+    Top = 8
   end
 end

@@ -45,37 +45,42 @@ begin
       SearchForm.SearchByDropBox.Items.Add('Дата отправления');
       SearchForm.SearchByDropBox.Items.Add('Тип вагона');
       SearchForm.SearchByDropBox.ItemIndex := 0;
+    end
+  else if (table = 'Passengers') then
+    begin
+      SearchForm.SearchByDropBox.Items.Add('Имя пассажира');
+      SearchForm.SearchByDropBox.Items.Add('Номер поезда');
+      SearchForm.SearchByDropBox.Items.Add('Пункт отправления');
+      SearchForm.SearchByDropBox.Items.Add('Пункт прибывания');
+      SearchForm.SearchByDropBox.ItemIndex := 0;
+    end
+  else if (table = 'Baggage') then
+    begin
+      SearchForm.SearchByDropBox.Items.Add('Код пассажира');
+      SearchForm.SearchByDropBox.ItemIndex := 0;
     end;
   SearchForm.IsFilterCheckBox.Checked := Unit1.getCurrentDataSet().Filtered;
   tableForSearching := table;
 end;
 
 procedure TSearchForm.SearchButtonClick(Sender: TObject);
-var dataSet: TDataSet;
+var query: TQuery;
     selectedFieldForSearching: string;
 begin
   if (tableForSearching = 'Trains') then
-      dataSet := DM.TrainData.DataSet;
+      query := DM.TrainQuery;
   if (tableForSearching = 'Passengers') then
-    begin
-      dataSet := DM.PassengerData.DataSet;
-    end;
+      query := DM.PassengerQuery;
   if (tableForSearching = 'Baggage') then
-    begin
-      dataSet := DM.BaggageData.DataSet;
-    end;
+      query := DM.BaggageQuery;
 
   selectedFieldForSearching := getSelectedFieldForSearching(SearchByDropBox);
   if (selectedFieldForSearching <> '') and (SearchEdit.Text <> '') then
     begin
-      if not dataSet.Locate(selectedFieldForSearching, SearchEdit.Text, [loCaseInsensitive, loPartialKey]) then
-        ShowMessage('"' + SearchByDropBox.Text + '" со значением ' + SearchEdit.Text + ' не найдено')
-      else begin
-        dataSet.Filtered := IsFilterCheckBox.Checked;;
-        dataSet.Filter := selectedFieldForSearching + '=' + '''' + SearchEdit.Text + '''';
-        SearchEdit.Text := '';
-        Hide;
-      end;
+      query.Filtered := IsFilterCheckBox.Checked;
+      query.Filter := selectedFieldForSearching + '=' + '''' + SearchEdit.Text + '''';
+      query.Locate(selectedFieldForSearching, SearchEdit.Text, [loCaseInsensitive, loPartialKey]);
+      Hide;
     end;
 end;
 
@@ -87,6 +92,21 @@ begin
         0: Result := 'TRAIN_ID';
         1: Result := 'DEPARTURE_DATE';
         2: Result := 'WAGON_TYPE';
+      end;
+    end
+  else if (tableForSearching = 'Passengers') then
+    begin
+      case dropbox.ItemIndex of
+        0: Result := 'PASSENGER_NAME';
+        1: Result := 'TRAIN_ID';
+        2: Result := 'POINT_OF_DEPARTURE';
+        3: Result := 'POINT_OF_DESTINATION';
+      end;
+    end
+  else if (tableForSearching = 'Baggage') then
+    begin
+      case dropbox.ItemIndex of
+        0: Result := 'PASSENGER_ID';
       end;
     end;
 end;

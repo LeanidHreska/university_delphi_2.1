@@ -16,10 +16,11 @@ type
     btn2: TButton;
     PassengerIdEditHidden: TEdit;
     PassengerNameEdit: TLabeledEdit;
+    LabeledEdit1: TLabeledEdit;
     procedure btn2Click(Sender: TObject);
     function isFormValid(): Boolean;
     procedure btn1Click(Sender: TObject);
-    procedure clearForm();
+    procedure resetForm();
     procedure preFillForm(dataset: TDataSet);
     procedure updateRecordFromForm(Sender: TObject);
     procedure activateEditMode;
@@ -41,6 +42,7 @@ implementation
 
 procedure TPassengerForm.btn2Click(Sender: TObject);
 begin
+  deactivateEditMode;
   Hide;
 end;
 
@@ -55,7 +57,7 @@ begin
   else Result := True;
 end;
 
-procedure TPassengerForm.clearForm;
+procedure TPassengerForm.resetForm;
 begin
   PassengerNameEdit.Text := '';
   TrainIdEdit.Text := '';
@@ -81,7 +83,7 @@ begin
 
   Hide;
   deactivateEditMode;
-  clearForm;
+  resetForm;
 end;
 
 procedure TPassengerForm.activateEditMode;
@@ -103,7 +105,7 @@ begin
       Unit2.executeSQLTransaction(DM.PassengerQuery, DM.PassengerData.DataSet, @executeInsertTransaction);
 
       Hide;
-      clearForm();
+      resetForm();
     end
   else ShowMessage('Заполните все поля');
 end;

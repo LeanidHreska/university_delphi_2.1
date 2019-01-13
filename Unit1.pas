@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, ExtCtrls, DBCtrls, Grids, DBGrids, DB, DBTables,
-  StdCtrls;
+  StdCtrls, RpDefine, RpCon, RpConDS, RpRave;
 
 type
   TForm1 = class(TForm)
@@ -18,13 +18,10 @@ type
     addButton: TButton;
     editButton: TButton;
     deleteButton: TButton;
-    PriceOfAllSoldTicketsLabel: TLabel;
-    PriceOfAllSoldTicketsValueLabel: TLabel;
     SoldTicketsQuantityLabel: TLabel;
     SoldTicketsQuantityLabelValue: TLabel;
     MainMenu: TMainMenu;
     N4: TMenuItem;
-    N5: TMenuItem;
     N6: TMenuItem;
     N7: TMenuItem;
     N8: TMenuItem;
@@ -32,6 +29,13 @@ type
     N10: TMenuItem;
     C1: TMenuItem;
     N11: TMenuItem;
+    N5: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    RvDataSetConnection: TRvDataSetConnection;
+    RvProject: TRvProject;
+    N14: TMenuItem;
+    N15: TMenuItem;
     procedure N1Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
@@ -39,13 +43,16 @@ type
     procedure deleteButtonClick(Sender: TObject);
     procedure editButtonClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure N5Click(Sender: TObject);
     procedure N6Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
     procedure N9Click(Sender: TObject);
     procedure N10Click(Sender: TObject);
     procedure C1Click(Sender: TObject);
     procedure N11Click(Sender: TObject);
+    procedure N5Click(Sender: TObject);
+    procedure N12Click(Sender: TObject);
+    procedure N13Click(Sender: TObject);
+    procedure N15Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -57,7 +64,6 @@ function getInsertParamsString(tableName: String): String;
 function getCurrentQuery(): TQuery;
 function getCurrentDataSet(): TDataSet;
 function getCurrentTableName(): string;
-procedure setPriceOfAllSoldTickets();
 procedure setSoldTicketsQuantity();
 procedure executeDeleteTransaction;
 procedure sort(field: string; sortType: string = 'ASC');
@@ -67,7 +73,7 @@ var
 
 implementation
 
-uses Unit3, Unit2, Unit4, Unit5, Unit6;
+uses Unit3, Unit2, Unit4, Unit5, Unit6, BaggageUnit;
 
 
 {$R *.dfm}
@@ -76,7 +82,6 @@ procedure TForm1.N1Click(Sender: TObject);
 begin
 DBGrid.DataSource := DM.TrainData;
 DBNavigator.DataSource := DM.TrainData;
-setPriceOfAllSoldTickets
 end;
 
 procedure TForm1.N2Click(Sender: TObject);
@@ -94,7 +99,8 @@ end;
 procedure TForm1.addButtonClick(Sender: TObject);
 begin
 if (getCurrentTableName() = 'TRAINS') then Form3.Show;
-if (getCurrentTableNAme() = 'PASSENGERS') then PassengerForm.Show;
+if (getCurrentTableName() = 'PASSENGERS') then PassengerForm.Show;
+if (getCurrentTableName() = 'BAGGAGE') then BaggageForm.Show;
 end;
 
 procedure executeDeleteTransaction;
@@ -108,6 +114,7 @@ begin
 
   if (currentTable = 'TRAINS') then uniqueField := 'TRANSACTION_ID';
   if (currentTable = 'PASSENGERS') then uniqueField := 'PASSENGER_ID';
+  if (currentTable = 'BAGGAGE') then uniqueField := 'TRANSACTION_ID';
 
   uniqueFieldValue := Form1.DBGrid.DataSource.DataSet.FieldByName(uniqueField).AsInteger;
   currentQuery.SQL.Text := 'DELETE FROM ' + currentTable + ' WHERE ' + uniqueField + '=:' + uniqueField +';';
@@ -122,7 +129,6 @@ begin
 
   if (getCurrentTableName() = 'TRAINS') then
     begin
-      setPriceOfAllSoldTickets;
       setSoldTicketsQuantity;
     end;
 end;
@@ -158,32 +164,18 @@ begin
       Unit3.activateEditMode;
       Form3.Show;
     end
-  else if (getCurrentTableName() ='PASSENGERS') then
+  else if (getCurrentTableName() = 'PASSENGERS') then
     begin
       PassengerForm.preFillForm(DBGrid.DataSource.DataSet);
       PassengerForm.activateEditMode;
       PassengerForm.Show;
-    end;
-
-end;
-
-procedure setPriceOfAllSoldTickets();
-  var sumOfAllTickets, ticketQuantity, ticketPrice, currentRecIdx: Integer;
-begin
-  sumOfAllTickets := 0;
-  currentRecIdx := DM.TrainData.DataSet.RecNo;
-  DM.TrainData.DataSet.First;
-
-  while (DM.TrainData.DataSet.RecordCount >= DM.TrainData.DataSet.RecNo) do
+    end
+  else if (getCurrentTableName() = 'BAGGAGE') then
     begin
-      ticketQuantity := DM.TrainData.DataSet.FieldByName('TICKET_QUANTITY').AsInteger;
-      ticketPrice := DM.TrainData.DataSet.FieldByName('TICKET_PRICE').AsInteger;
-      sumOfAllTickets := sumOfAllTickets + (ticketQuantity * ticketPrice);
-      if (DM.TrainData.DataSet.RecordCount = DM.TrainData.DataSet.RecNo) then Break;
-      DM.TrainData.DataSet.Next;
+      BaggageForm.preFillForm(DBGrid.DataSource.DataSet);
+      BaggageForm.activateEditMode;
+      BaggageForm.Show;
     end;
-  Form1.PriceOfAllSoldTicketsValueLabel.Caption := IntToStr(sumOfAllTickets);
-  DM.TrainData.DataSet.RecNo := currentRecIdx;
 end;
 
 procedure setSoldTicketsQuantity();
@@ -211,7 +203,7 @@ begin
   else if (tableName = 'Passengers') then
     Result := 'INSERT INTO PASSENGERS (PASSENGER_NAME, TRAIN_ID, NUMBER_OF_TICKETS, POINT_OF_DEPARTURE, POINT_OF_DESTINATION)'
   else if (tableName = 'Baggage') then
-    Result := 'Not implemented'
+    Result := 'INSERT INTO BAGGAGE (PASSENGER_ID, BAGGAGE_AMOUNT, BAGGAGE_FREE_SEATS)'
 end;
 
 function getInsertParamsString(tableName: string): string;
@@ -221,19 +213,12 @@ begin
   else if (tableName = 'Passengers') then
     Result := 'VALUES (:passengerName, :trainId, :numberOfTickets, :pointOfDeparture, :pointOfDestination)'
   else if (tableName = 'Baggage') then
-    Result := 'Not implemented'
+    Result := 'VALUES (:passengerId, :baggageAmount, :baggageFreeSeats)';
 end;
 
 procedure TForm1.FormActivate(Sender: TObject);
 begin
- setPriceOfAllSoldTickets;
- setSoldTicketsQuantity;
-end;
-
-procedure TForm1.N5Click(Sender: TObject);
-begin
-  SearchForm.Show;
-  Unit4.prepareForm('Trains');
+// setSoldTicketsQuantity;
 end;
 
 procedure TForm1.N6Click(Sender: TObject);
@@ -245,7 +230,6 @@ begin
   DM.BaggageData.DataSet.Filtered := False;
   DM.BaggageData.DataSet.Filter := '';
   setSoldTicketsQuantity;
-  setPriceOfAllSoldTickets;
 end;
 
 procedure TForm1.N8Click(Sender: TObject);
@@ -277,6 +261,29 @@ end;
 procedure TForm1.N11Click(Sender: TObject);
 begin
   QueriesForm.Show;
+end;
+
+procedure TForm1.N5Click(Sender: TObject);
+begin
+  SearchForm.Show;
+  Unit4.prepareForm('Trains');
+end;
+
+procedure TForm1.N12Click(Sender: TObject);
+begin
+  SearchForm.Show;
+  Unit4.prepareForm('Passengers');
+end;
+
+procedure TForm1.N13Click(Sender: TObject);
+begin
+  SearchForm.Show;
+  Unit4.prepareForm('Baggage');
+end;
+
+procedure TForm1.N15Click(Sender: TObject);
+begin
+  RvProject.Execute;
 end;
 
 end.

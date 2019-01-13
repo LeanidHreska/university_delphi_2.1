@@ -29,7 +29,7 @@ var
   Form3: TForm3;
   transactionId: Integer;
   procedure setParamsToQuery(withTransactionId: Boolean);
-  procedure clearForm();
+  procedure resetForm();
   procedure preFillForm(dataset: TDataSet);
   procedure changeButtonLabel(caption: string);
   procedure activateEditMode();
@@ -61,7 +61,7 @@ begin
       Unit2.executeSQLTransaction(DM.TrainQuery, DM.TrainData.DataSet, @executeInsertTransaction);
 
       Form3.Hide;
-      clearForm;
+      resetForm;
     end
   else begin
     showmessage('Заполните все поля');
@@ -104,7 +104,7 @@ begin
   Form3.btn1.Caption := caption;
 end;
 
-procedure clearForm();
+procedure resetForm();
 begin
   Form3.TrainIdEdit.Text := '';
   Form3.DepartureDateEdit.Text := '';
@@ -145,7 +145,7 @@ begin
 
   Form3.Hide;
   deactivateEditMode;
-  clearForm;
+  resetForm;
 end;
 
 end.

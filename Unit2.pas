@@ -10,13 +10,19 @@ type
   TDM = class(TDataModule)
     TrainData: TDataSource;
     TrainQuery: TQuery;
-    Passenger: TTable;
     PassengerQuery: TQuery;
     PassengerData: TDataSource;
-    Baggage: TTable;
     BaggageQuery: TQuery;
     BaggageData: TDataSource;
+    intgrfldTrainQueryTRANSACTION_ID: TIntegerField;
+    intgrfldTrainQueryTRAIN_ID: TIntegerField;
+    dtfldTrainQueryDEPARTURE_DATE: TDateField;
+    intgrfldTrainQueryTICKET_QUANTITY: TIntegerField;
+    fltfldTrainQueryTICKET_PRICE: TFloatField;
+    strngfldTrainQueryWAGON_TYPE: TStringField;
+    strngfldTrainQueryPRICE_OF_ALL_TICKETS: TStringField;
     procedure DataModuleCreate(Sender: TObject);
+    procedure TrainQueryCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -50,6 +56,11 @@ begin
   query.SQL.Text := sqlText;
 
   dataset.Open;
+end;
+
+procedure TDM.TrainQueryCalcFields(DataSet: TDataSet);
+begin
+  strngfldTrainQueryPRICE_OF_ALL_TICKETS.Value := IntToStr(DataSet.FieldByName('TICKET_QUANTITY').AsInteger * DataSet.FieldByName('TICKET_PRICE').AsInteger);
 end;
 
 end.
